@@ -43,6 +43,8 @@ class BundleAdjustmentController : public BaseController {
 
   void Run();
 
+  void RunWithDB();
+
  private:
   const OptionManager options_;
   std::shared_ptr<Reconstruction> reconstruction_;

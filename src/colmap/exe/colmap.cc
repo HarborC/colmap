@@ -136,6 +136,7 @@ int main(int argc, char** argv) {
   commands.emplace_back("vocab_tree_builder", &colmap::RunVocabTreeBuilder);
   commands.emplace_back("vocab_tree_matcher", &colmap::RunVocabTreeMatcher);
   commands.emplace_back("vocab_tree_retriever", &colmap::RunVocabTreeRetriever);
+  commands.emplace_back("bundle_adjuster_with_db", &colmap::RunBundleAdjusterWithDB);
 
   if (argc == 1) {
     return ShowHelp(commands);
