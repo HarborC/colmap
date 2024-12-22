@@ -105,7 +105,7 @@ void BundleAdjustmentController::Run() {
   run_timer.PrintMinutes();
 }
 
-void BundleAdjustmentController::RunWithDB() {
+void BundleAdjustmentController::RunWithDB(bool _use_prior_position) {
   THROW_CHECK_NOTNULL(reconstruction_);
 
   std::unordered_set<std::string> image_names;
@@ -126,11 +126,9 @@ void BundleAdjustmentController::RunWithDB() {
     return;
   }
 
-  auto mapper_options = *options_.mapper;
-
   // If prior positions are to be used and setup from the database, convert
   // geographic coords. to cartesian ones
-  if (mapper_options.use_prior_position) {
+  if (_use_prior_position) {
     database_cache->SetupPosePriors();
   }
 
@@ -167,8 +165,7 @@ void BundleAdjustmentController::RunWithDB() {
     ba_config.AddImage(image_id);
   }
 
-  const bool use_prior_position =
-      mapper_options.use_prior_position && reg_image_ids.size() > 2;
+  const bool use_prior_position = _use_prior_position && reg_image_ids.size() > 2;
 
   std::unique_ptr<BundleAdjuster> bundle_adjuster;
   if (!use_prior_position) {
@@ -180,9 +177,10 @@ void BundleAdjustmentController::RunWithDB() {
     bundle_adjuster = CreateDefaultBundleAdjuster(
         std::move(custom_ba_options), std::move(ba_config), *reconstruction_);
   } else {
+    LOG(INFO) << "start bundle adjustment with prior positions";
     PosePriorBundleAdjustmentOptions prior_options;
-    prior_options.use_robust_loss_on_prior_position = mapper_options.use_robust_loss_on_prior_position;
-    prior_options.prior_position_loss_scale = mapper_options.prior_position_loss_scale;
+    prior_options.use_robust_loss_on_prior_position = false;
+    prior_options.prior_position_loss_scale = 7.815;
     bundle_adjuster = CreatePosePriorBundleAdjuster(std::move(custom_ba_options),
                                                     prior_options,
                                                     std::move(ba_config),

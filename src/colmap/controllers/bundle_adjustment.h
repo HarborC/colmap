@@ -43,7 +43,7 @@ class BundleAdjustmentController : public BaseController {
 
   void Run();
 
-  void RunWithDB();
+  void RunWithDB(bool _use_prior_position = false);
 
  private:
   const OptionManager options_;
