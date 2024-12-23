@@ -52,7 +52,7 @@ COLMAP_ADD_LIBRARY(
         version.h version.cc
     PUBLIC_LINK_LIBS
         Eigen3::Eigen
-        glog::glog
+        # glog::glog
         SQLite::SQLite3
     PRIVATE_LINK_LIBS
         Boost::boost
@@ -92,7 +92,7 @@ if(TESTS_ENABLED)
         SRCS
             gtest_main.cc
         PUBLIC_LINK_LIBS
-            glog::glog
+            # glog::glog
             GTest::gmock_main
     )
 endif()

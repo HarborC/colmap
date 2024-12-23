@@ -269,11 +269,10 @@ ceres::LossFunction* BundleAdjustmentOptions::CreateLossFunction() const {
 ceres::Solver::Options BundleAdjustmentOptions::CreateSolverOptions(
     const BundleAdjustmentConfig& config, const ceres::Problem& problem) const {
   ceres::Solver::Options custom_solver_options = solver_options;
-  if (VLOG_IS_ON(2)) {
-    custom_solver_options.minimizer_progress_to_stdout = true;
-    custom_solver_options.logging_type =
-        ceres::LoggingType::PER_MINIMIZER_ITERATION;
-  }
+  // if (VLOG_IS_ON(2)) {
+  custom_solver_options.minimizer_progress_to_stdout = true;
+  custom_solver_options.logging_type = ceres::LoggingType::PER_MINIMIZER_ITERATION;
+  // }
 
   const int num_images = config.NumImages();
   const bool has_sparse =
@@ -1116,9 +1115,7 @@ std::unique_ptr<BundleAdjuster> CreatePosePriorBundleAdjuster(
 
 void PrintSolverSummary(const ceres::Solver::Summary& summary,
                         const std::string& header) {
-  if (VLOG_IS_ON(3)) {
-    LOG(INFO) << summary.FullReport();
-  }
+  LOG(INFO) << summary.FullReport();
 
   std::ostringstream log;
   log << header << "\n";
